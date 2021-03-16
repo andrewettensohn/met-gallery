@@ -1,17 +1,22 @@
 <template>
-  <v-container fluid>
-    <v-row class="text-center" justify="center">
+  <v-container fluid fill-height>
+    <v-row class="mb-0">
       <v-col class="text-center">
         <div class="subheading font-weight-bold">{{ artwork.title }}</div>
         <div v-if="artwork.artistDisplayName">
           By {{ artwork.artistDisplayName }}
         </div>
         <div v-if="!artwork.artistDisplayName">Unknown Author</div>
-      </v-col>
-    </v-row>
-    <v-row justify="center">
-      <v-col cols="8">
-        <v-img contain height="800" :src="artwork.primaryImage"></v-img>
+      </v-col></v-row
+    >
+    <v-row>
+      <v-col cols="12">
+        <v-img
+          contain
+          height="400"
+          alt="Some random art should be here."
+          :src="artwork.primaryImage"
+        ></v-img>
       </v-col>
     </v-row>
   </v-container>
