@@ -18,7 +18,7 @@ const routes = [
   {
     path: '/browse',
     name: 'Browse',
-    component: () => import(/* webpackChunkName: "about" */ '../views/Browse.vue')
+    component: () => import(/* webpackChunkName: "browse" */ '../views/Browse.vue')
   },
 ]
 
