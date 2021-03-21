@@ -2,7 +2,7 @@
   <v-container fluid fill-height>
     <v-row class="mb-0">
       <v-col class="text-center">
-        <div class="subheading font-weight-bold">{{ artwork.title }}</div>
+        <div class="font-weight-bold">{{ artwork.title }}</div>
         <div v-if="artwork.artistDisplayName">
           By {{ artwork.artistDisplayName }}
         </div>

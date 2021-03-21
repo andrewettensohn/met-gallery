@@ -4,7 +4,7 @@
       <v-spacer />
       <v-col cols="10" lg="4">
         <v-text-field
-          label="title"
+          label="Search"
           v-model="searchTerm"
           solo
           clearable
@@ -23,9 +23,13 @@
     <v-row>
       <template v-for="item in galleryResult">
         <v-col lg="2" justify="space-around" :key="item.id">
-          <p>
+          <p class="font-weight-medium">
             {{ item.title }}
           </p>
+          <div v-if="item.artistDisplayName">
+            By {{ item.artistDisplayName }}
+          </div>
+          <div v-if="!item.artistDisplayName">Unknown Author</div>
           <a :href="item.primaryImage" target="_blank">
             <v-img
               contain
