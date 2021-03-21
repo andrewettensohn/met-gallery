@@ -42,7 +42,7 @@
       </template>
     </v-row>
 
-    <v-row justify="center" v-if="galleryResult.length == itemsPerRequest">
+    <v-row justify="center" v-if="galleryResult.length > 0">
       <v-spacer />
       <v-col cols="3" lg="1">
         <v-btn icon outlined @click="onPreviousPage()"
@@ -50,8 +50,7 @@
         >
       </v-col>
       <v-col cols="4" lg="1">
-        {{ itemsPerRequest * currentPage + itemsPerRequest }} /
-        {{ collectionIdResults.length }}
+        {{displayCountMessage}}
       </v-col>
       <v-col cols="3" lg="1">
         <v-btn icon outlined @click="onNextPage()"
@@ -74,6 +73,7 @@ export default {
       currentPage: 0,
       totalPages: 0,
       itemsPerRequest: 12,
+      displayCountMessage: "",
     };
   },
   methods: {
@@ -146,7 +146,25 @@ export default {
         );
         var artworkObject = await response.json();
         this.galleryResult.push(artworkObject);
+        this.getPageDisplayCountMessage();
       });
+    },
+    getPageDisplayCountMessage()
+    {
+      var message = "";
+      var displayedCount = 0;
+
+      if(this.galleryResult.length >= this.itemsPerRequest)
+      {
+        displayedCount = this.itemsPerRequest * this.currentPage + this.itemsPerRequest;
+        message = displayedCount +  " / " + this.collectionIdResults.length;
+      }
+      else
+      {
+        displayedCount = this.collectionIdResults.length;
+        message = displayedCount + " / " + this.collectionIdResults.length;
+      }
+      this.displayCountMessage = message;
     },
   },
 };
