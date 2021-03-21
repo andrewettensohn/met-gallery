@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row>
       <v-spacer />
-      <v-col cols="8">
+      <v-col cols="10" lg="4">
         <v-text-field
           label="title"
           v-model="searchTerm"
@@ -22,7 +22,7 @@
 
     <v-row>
       <template v-for="item in galleryResult">
-        <v-col sm="12" lg="2" justify="space-around" :key="item.id">
+        <v-col lg="2" justify="space-around" :key="item.id">
           <p>
             {{ item.title }}
           </p>
@@ -38,14 +38,19 @@
       </template>
     </v-row>
 
-    <v-row justify="center">
+    <v-row justify="center" v-if="galleryResult.length > 0">
       <v-spacer />
-      <v-col sm="3" lg="1">
+      <v-col cols="3" lg="1">
         <v-btn icon outlined><v-icon>mdi-chevron-left</v-icon></v-btn>
       </v-col>
-      <v-col sm="3" lg="1"> {{ collectionIdResults.length }} Results </v-col>
-      <v-col sm="3" lg="1">
-        <v-btn icon outlined><v-icon>mdi-chevron-right</v-icon></v-btn>
+      <v-col cols="4" lg="1">
+        {{ itemsPerRequest * currentPage }} /
+        {{ collectionIdResults.length }}
+      </v-col>
+      <v-col cols="3" lg="1">
+        <v-btn icon outlined @click="onNextPage()"
+          ><v-icon>mdi-chevron-right</v-icon></v-btn
+        >
       </v-col>
       <v-spacer />
     </v-row>
@@ -60,26 +65,53 @@ export default {
       searchTerm: "",
       galleryResult: [],
       collectionIdResults: [],
-      page: 1,
+      currentPage: 1,
+      totalPages: 0,
       itemsPerRequest: 12,
     };
   },
   mounted: {},
   methods: {
-    getSmallerArray(array) {
-      return array.slice(0, 18);
+    getPageIds(array, startIndex, endIndex) {
+      try {
+        return array.slice(startIndex, endIndex);
+      } catch (ex) {
+        console.log(ex);
+      }
     },
     async search() {
       this.galleryResult = [];
       this.collectionIdResults = await this.searchByTerm();
 
-      this.pageButtons = Math.round(
+      this.totalPages = Math.round(
         (this.collectionIdResults.length + this.itemsPerRequest) /
           this.itemsPerRequest
       );
 
-      var smallArray = this.getSmallerArray(this.collectionIdResults);
-      await this.getArtObjectFromIds(smallArray);
+      var pageIds = this.getPageIds(
+        this.collectionIdResults,
+        0,
+        this.itemsPerRequest
+      );
+      await this.getArtObjectFromIds(pageIds);
+    },
+    async onNextPage() {
+      try {
+        this.galleryResult = [];
+        var startIndex = this.currentPage * this.itemsPerRequest;
+        var endIndex = startIndex + this.itemsPerRequest;
+
+        var pageIds = this.getPageIds(
+          this.collectionIdResults,
+          startIndex,
+          endIndex
+        );
+
+        await this.getArtObjectFromIds(pageIds);
+        this.currentPage += 1;
+      } catch (ex) {
+        console.log(ex);
+      }
     },
     async searchByTerm() {
       const response = await fetch(
