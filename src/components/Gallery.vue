@@ -26,7 +26,7 @@
           <p>
             {{ item.title }}
           </p>
-          <a :href="item.primaryImage">
+          <a :href="item.primaryImage" target="_blank">
             <v-img
               contain
               height="400"
@@ -38,13 +38,15 @@
       </template>
     </v-row>
 
-    <v-row justify="center" v-if="galleryResult.length > 0">
+    <v-row justify="center" v-if="galleryResult.length == itemsPerRequest">
       <v-spacer />
       <v-col cols="3" lg="1">
-        <v-btn icon outlined><v-icon>mdi-chevron-left</v-icon></v-btn>
+        <v-btn icon outlined @click="onPreviousPage()"
+          ><v-icon>mdi-chevron-left</v-icon></v-btn
+        >
       </v-col>
       <v-col cols="4" lg="1">
-        {{ itemsPerRequest * currentPage }} /
+        {{ itemsPerRequest * currentPage + itemsPerRequest }} /
         {{ collectionIdResults.length }}
       </v-col>
       <v-col cols="3" lg="1">
@@ -65,19 +67,14 @@ export default {
       searchTerm: "",
       galleryResult: [],
       collectionIdResults: [],
-      currentPage: 1,
+      currentPage: 0,
       totalPages: 0,
       itemsPerRequest: 12,
     };
   },
-  mounted: {},
   methods: {
     getPageIds(array, startIndex, endIndex) {
-      try {
-        return array.slice(startIndex, endIndex);
-      } catch (ex) {
-        console.log(ex);
-      }
+      return array.slice(startIndex, endIndex);
     },
     async search() {
       this.galleryResult = [];
@@ -94,24 +91,39 @@ export default {
         this.itemsPerRequest
       );
       await this.getArtObjectFromIds(pageIds);
+      this.currentPage = 0;
     },
     async onNextPage() {
-      try {
-        this.galleryResult = [];
-        var startIndex = this.currentPage * this.itemsPerRequest;
-        var endIndex = startIndex + this.itemsPerRequest;
+      if (this.currentPage + 1 >= this.totalPages) return;
 
-        var pageIds = this.getPageIds(
-          this.collectionIdResults,
-          startIndex,
-          endIndex
-        );
+      this.currentPage += 1;
+      var startIndex = this.currentPage * this.itemsPerRequest;
+      var endIndex = startIndex + this.itemsPerRequest;
+      this.galleryResult = [];
 
-        await this.getArtObjectFromIds(pageIds);
-        this.currentPage += 1;
-      } catch (ex) {
-        console.log(ex);
-      }
+      var pageIds = this.getPageIds(
+        this.collectionIdResults,
+        startIndex,
+        endIndex
+      );
+
+      await this.getArtObjectFromIds(pageIds);
+    },
+    async onPreviousPage() {
+      if (this.currentPage <= 0) return;
+
+      this.currentPage -= 1;
+      var startIndex = this.currentPage * this.itemsPerRequest;
+      var endIndex = startIndex + this.itemsPerRequest;
+      this.galleryResult = [];
+
+      var pageIds = this.getPageIds(
+        this.collectionIdResults,
+        startIndex,
+        endIndex
+      );
+
+      await this.getArtObjectFromIds(pageIds);
     },
     async searchByTerm() {
       const response = await fetch(
