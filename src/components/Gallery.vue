@@ -38,6 +38,51 @@
               :src="item.primaryImage"
             ></v-img>
           </a>
+          <v-expansion-panels>
+              <v-expansion-panel>
+                <v-expansion-panel-header>
+                  Info
+                </v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <div v-if="item.medium">
+                    <v-list-item two-line >
+                      <v-list-item-content>
+                        <v-list-item-title >Medium</v-list-item-title>
+                        <v-list-item-subtitle>{{item.medium}}</v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>           
+                    </div>
+                    <div v-if="item.culture">
+                      <v-divider />
+                      <v-list-item two-line>
+                        <v-list-item-content>
+                          <v-list-item-title >Culture</v-list-item-title>
+                          <v-list-item-subtitle>{{item.culture}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                    <div v-if="item.period">
+                      <v-divider />
+                      <v-list-item two-line>
+                        <v-list-item-content>
+                          <v-list-item-title >Period</v-list-item-title>
+                          <v-list-item-subtitle>{{item.period}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                    <div v-if="item.artistDisplayName && item.artistDisplayBio">
+                      <v-divider />
+                      <v-list-item three-line >
+                        <v-list-item-content>
+                          <v-list-item-title >Artist</v-list-item-title>
+                          <v-list-item-subtitle>{{item.artistDisplayName}}</v-list-item-subtitle>
+                          <v-list-item-subtitle>{{item.artistDisplayBio}}</v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </div>
+                </v-expansion-panel-content>
+              </v-expansion-panel>
+            </v-expansion-panels>          
         </v-col>
       </template>
     </v-row>

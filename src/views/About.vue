@@ -1,6 +1,6 @@
 <template>
-  <div class="about">
-    <v-row class="text-center">
+  <div class="about my-1">
+    <v-row class="text-center mb-3">
       <v-col>
         <h3>MET Gallery</h3>
       </v-col>
@@ -9,21 +9,26 @@
       <v-col>
         <p>App by Andrew Ettensohn using Vue Js. and Vuetify.</p>
         <p>
-          Images provided by the
+          Images provided by
           <a href="https://www.metmuseum.org/"
             >The Metropolitan Museum of Art.</a
           >
         </p>
       </v-col>
     </v-row>
+    <RandomArtwork />
   </div>
 </template>
 
 <script>
+import RandomArtwork from "@/components/RandomArtwork.vue";
 export default {
   name: "About",
   metaInfo: {
     title: "MET Gallery",
+  },
+    components: {
+    RandomArtwork,
   },
 };
 </script>

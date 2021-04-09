@@ -1,14 +1,16 @@
 <template>
   <v-container fluid fill-height>
+
     <v-row class="mb-0">
       <v-col class="text-center">
-        <div class="font-weight-bold">{{ artwork.title }}</div>
-        <div v-if="artwork.artistDisplayName">
+        <i class="font-italic">{{ artwork.title }}</i>
+        <p v-if="artwork.artistDisplayName">
           By {{ artwork.artistDisplayName }}
-        </div>
-        <div v-if="!artwork.artistDisplayName">Unknown Author</div>
-      </v-col></v-row
-    >
+        </p>
+        <p v-if="!artwork.artistDisplayName">Unknown Author</p>
+      </v-col>
+    </v-row>
+
     <v-row>
       <v-col cols="12">
         <v-img
@@ -19,6 +21,54 @@
         ></v-img>
       </v-col>
     </v-row>
+
+    <v-row class="justify-center">
+      <v-spacer />
+      <v-col cols="3">
+        <v-card 
+          class="mx-auto justify-center text-center"
+          tile>
+          <div v-if="artwork.medium">
+           <v-list-item two-line >
+            <v-list-item-content>
+              <v-list-item-title >Medium</v-list-item-title>
+              <v-list-item-subtitle>{{artwork.medium}}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>           
+          </div>
+          <div v-if="artwork.culture">
+            <v-divider />
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title >Culture</v-list-item-title>
+                <v-list-item-subtitle>{{artwork.culture}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+          <div v-if="artwork.period">
+            <v-divider />
+            <v-list-item two-line>
+              <v-list-item-content>
+                <v-list-item-title >Period</v-list-item-title>
+                <v-list-item-subtitle>{{artwork.period}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+          <div v-if="artwork.artistDisplayName && artwork.artistDisplayBio">
+            <v-divider />
+            <v-list-item three-line >
+              <v-list-item-content>
+                <v-list-item-title >Artist</v-list-item-title>
+                <v-list-item-subtitle>{{artwork.artistDisplayName}}</v-list-item-subtitle>
+                <v-list-item-subtitle>{{artwork.artistDisplayBio}}</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </div>
+        </v-card>
+      </v-col>
+      <v-spacer />
+    </v-row>
+
   </v-container>
 </template>
 
