@@ -24,7 +24,7 @@
 
     <v-row class="justify-center">
       <v-spacer />
-      <v-col cols="3">
+      <v-col lg="3" cols="10" >
         <v-card 
           class="mx-auto justify-center text-center"
           tile>
